@@ -3,7 +3,10 @@
   <string name="pref_file_update">pref_update</string>
   <string name="pref_key_version">pref_key_version</string>
   <string name="title_activity_technique_detail">TechniqueDetailActivity</string>
-  <string name="title_home">Home</string>
-  <string name="title_dashboard">Dashboard</string>
-  <string name="title_notifications">Notifications</string>
+  <string name="title_what">What</string>
+  <string name="title_why">Why</string>
+  <string name="title_how">How</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
