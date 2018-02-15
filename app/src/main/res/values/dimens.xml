@@ -8,4 +8,11 @@
   <dimen name="margin_half_default">4dp</dimen>
   <dimen name="text_size_large_default">24sp</dimen>
   <dimen name="padding_double_default">16dp</dimen>
+
+  <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+  <dimen name="widget_margin">8dp</dimen>
+  <dimen name="text_size_normal_default">16sp</dimen>
 </resources>
