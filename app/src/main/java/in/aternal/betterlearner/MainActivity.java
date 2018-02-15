@@ -15,9 +15,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import in.aternal.betterlearner.background.TechniquePullService;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
@@ -26,11 +28,12 @@ import in.aternal.betterlearner.data.TechniqueDbHelper;
 public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks<Cursor> {
 
+  public static final String EXTRA_TECHNIQUE_ID = "extra_technique_id";
   RecyclerView mTechniqueRecyclerView;
   TechniquesRecyclerViewAdapter mTechniqueRecyclerViewAdapter;
   private GridLayoutManager mGridLayoutManager;
-  public static final String EXTRA_TECHNIQUE_ID = "extra_technique_id";
-
+  private AdView mAdView;
+  private FirebaseAnalytics mFirebaseAnalytics;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -52,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements
 
     getSupportLoaderManager().initLoader(0, null, this);
 
+    mAdView = (AdView) findViewById(R.id.adView);
+    AdRequest adRequest = new AdRequest.Builder().build();
+    mAdView.loadAd(adRequest);
+
+    mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
   }
 
   void fakeInsert(int id) {

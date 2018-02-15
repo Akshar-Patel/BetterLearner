@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "616471719574",
+    "firebase_url": "https://better-learner.firebaseio.com",
+    "project_id": "better-learner",
+    "storage_bucket": "better-learner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616471719574:android:ec01f9c462e0d6e2",
+        "android_client_info": {
+          "package_name": "in.aternal.betterlearner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616471719574-qq0nfstegplffptk2j5pqotlah6p1bh0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.aternal.betterlearner",
+            "certificate_hash": "f31785891728de79d40e866936e4d6b910e81576"
+          }
+        },
+        {
+          "client_id": "616471719574-t1r3p41b8cdqv6hfnhjl7b9l0hcijjtq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ5wEfsQqb1e-K-sE5OhC39VGBolbvI00"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616471719574-t1r3p41b8cdqv6hfnhjl7b9l0hcijjtq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
