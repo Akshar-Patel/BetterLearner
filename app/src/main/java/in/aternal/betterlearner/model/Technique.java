@@ -1,16 +1,43 @@
 package in.aternal.betterlearner.model;
 
 import android.os.Parcel;
-import android.os.Parcelable.Creator;
 import com.squareup.moshi.Json;
 
 public class Technique implements android.os.Parcelable {
-  @Json(name="id")
+
+  @Json(name = "id")
   int mId;
-  @Json(name="name")
+  @Json(name = "name")
   String mName;
-  @Json(name="desc")
+  @Json(name = "desc")
   String mDesc;
+  @Json(name = "what")
+  TechniqueWhat mTechniqueWhat;
+
+  public TechniqueWhy getTechniqueWhy() {
+    return mTechniqueWhy;
+  }
+
+  public void setTechniqueWhy(TechniqueWhy techniqueWhy) {
+    mTechniqueWhy = techniqueWhy;
+  }
+
+  @Json(name = "why")
+  TechniqueWhy mTechniqueWhy;
+
+  public TechniqueHow getTechniqueHow() {
+    return mTechniqueHow;
+  }
+
+  public void setTechniqueHow(TechniqueHow techniqueHow) {
+    mTechniqueHow = techniqueHow;
+  }
+
+  @Json(name = "how")
+  TechniqueHow mTechniqueHow;
+
+  public Technique() {
+  }
 
   public TechniqueWhat getTechniqueWhat() {
     return mTechniqueWhat;
@@ -19,9 +46,6 @@ public class Technique implements android.os.Parcelable {
   public void setTechniqueWhat(TechniqueWhat techniqueWhat) {
     mTechniqueWhat = techniqueWhat;
   }
-
-  @Json(name="what")
-  TechniqueWhat mTechniqueWhat;
 
   public int getId() {
     return mId;
@@ -47,9 +71,6 @@ public class Technique implements android.os.Parcelable {
     mDesc = desc;
   }
 
-  public Technique() {
-  }
-
   @Override
   public int describeContents() {
     return 0;
@@ -61,6 +82,8 @@ public class Technique implements android.os.Parcelable {
     dest.writeString(this.mName);
     dest.writeString(this.mDesc);
     dest.writeParcelable(this.mTechniqueWhat, flags);
+    dest.writeParcelable(this.mTechniqueWhy, flags);
+    dest.writeParcelable(this.mTechniqueHow, flags);
   }
 
   protected Technique(Parcel in) {
@@ -68,6 +91,8 @@ public class Technique implements android.os.Parcelable {
     this.mName = in.readString();
     this.mDesc = in.readString();
     this.mTechniqueWhat = in.readParcelable(TechniqueWhat.class.getClassLoader());
+    this.mTechniqueWhy = in.readParcelable(TechniqueWhy.class.getClassLoader());
+    this.mTechniqueHow = in.readParcelable(TechniqueHow.class.getClassLoader());
   }
 
   public static final Creator<Technique> CREATOR = new Creator<Technique>() {

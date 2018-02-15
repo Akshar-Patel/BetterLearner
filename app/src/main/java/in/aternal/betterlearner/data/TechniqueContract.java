@@ -15,6 +15,7 @@ public class TechniqueContract {
   public static final String PATH_TECHNIQUE = "technique";
   public static final String PATH_TECHNIQUE_WHAT = "technique_what";
   public static final String PATH_TECHNIQUE_WHY = "technique_why";
+  public static final String PATH_TECHNIQUE_HOW = "technique_how";
 
 
   public static final class TechniqueEntry implements BaseColumns {
@@ -48,16 +49,19 @@ public class TechniqueContract {
 
     public static final String TABLE_NAME = "technique_why";
     public static final String COLUMN_NAME_ID = "id";
-    public static final String COLUMN_NAME_BENEFIT1 = "benefit1";
-    public static final String COLUMN_NAME_BENEFIT2 = "benefit2";
-    public static final String COLUMN_NAME_BENEFIT3 = "benefit3";
-    public static final String COLUMN_NAME_BENEFIT4 = "benefit4";
-    public static final String COLUMN_NAME_BENEFIT5 = "benefit5";
-    public static final String COLUMN_NAME_BENEFIT6 = "benefit6";
-    public static final String COLUMN_NAME_BENEFIT7 = "benefit7";
-    public static final String COLUMN_NAME_BENEFIT8 = "benefit8";
-    public static final String COLUMN_NAME_BENEFIT9 = "benefit9";
-    public static final String COLUMN_NAME_BENEFIT10 = "benefit10";
+    public static final String COLUMN_NAME_BENEFITS = "benefits";
+    public static final String COLUMN_NAME_TECHNIQUE_ID = "technique_id";
+  }
+
+  public static final class TechniqueHowEntry implements BaseColumns {
+
+    public static final Uri CONTENT_URI_TECHNIQUE_HOW = BASE_CONTENT_URI.buildUpon()
+        .appendPath(PATH_TECHNIQUE_HOW)
+        .build();
+
+    public static final String TABLE_NAME = "technique_how";
+    public static final String COLUMN_NAME_ID = "id";
+    public static final String COLUMN_NAME_STEPS = "steps";
     public static final String COLUMN_NAME_TECHNIQUE_ID = "technique_id";
   }
 

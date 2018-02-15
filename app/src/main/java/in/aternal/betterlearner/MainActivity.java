@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements
   void fakeInsertWhat(int id) {
     ContentValues contentValues = new ContentValues();
     contentValues.put(TechniqueWhyEntry.COLUMN_NAME_ID, id);
-    contentValues.put(TechniqueWhyEntry.COLUMN_NAME_BENEFIT1, "bf1");
-    contentValues.put(TechniqueWhyEntry.COLUMN_NAME_BENEFIT2, "bf2");
     contentValues.put(TechniqueWhyEntry.COLUMN_NAME_TECHNIQUE_ID,1);
     getContentResolver().insert(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, contentValues);
   }

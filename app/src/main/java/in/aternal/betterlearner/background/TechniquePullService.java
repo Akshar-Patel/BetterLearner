@@ -7,10 +7,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import com.google.gson.Gson;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
+import in.aternal.betterlearner.data.TechniqueContract.TechniqueHowEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
 import in.aternal.betterlearner.model.Technique;
+import in.aternal.betterlearner.model.TechniqueHow;
+import in.aternal.betterlearner.model.TechniqueHow.Step;
+import in.aternal.betterlearner.model.TechniqueWhy.Benefit;
 import java.util.List;
 
 
@@ -24,12 +29,15 @@ public class TechniquePullService extends IntentService {
   protected void onHandleIntent(@Nullable Intent intent) {
 
     if (JsonParser.isUpdateAvailable(getApplicationContext())) {
+
       List<Technique> techniqueList = JsonParser.getTechniqueList(getApplicationContext());
 
-      testWhat(1);
-      ContentValues contentValuesTechnique, contentValuesTechniqueWhat;
-      for (Technique technique :
-          techniqueList) {
+      ContentValues contentValuesTechnique;
+      ContentValues contentValuesTechniqueWhat;
+      ContentValues contentValuesTechniqueWhy;
+      ContentValues contentValuesTechniqueHow;
+
+      for (Technique technique : techniqueList) {
 
         contentValuesTechnique = new ContentValues();
         contentValuesTechnique.put(TechniqueEntry.COLUMN_NAME_ID, technique.getId());
@@ -37,11 +45,25 @@ public class TechniquePullService extends IntentService {
         contentValuesTechnique.put(TechniqueEntry.COLUMN_NAME_DESC, technique.getDesc());
 
         contentValuesTechniqueWhat = new ContentValues();
-        Log.d("what desc",technique.getTechniqueWhat().getDesc());
         contentValuesTechniqueWhat
             .put(TechniqueWhatEntry.COLUMN_NAME_DESC, technique.getTechniqueWhat().getDesc());
         contentValuesTechniqueWhat
             .put(TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID, technique.getId());
+
+        contentValuesTechniqueWhy = new ContentValues();
+        List<Benefit> benefitList = technique.getTechniqueWhy().getBenefitList();
+        Gson gson = new Gson();
+        String benefitString = gson.toJson(benefitList);
+        contentValuesTechniqueWhy.put(TechniqueWhyEntry.COLUMN_NAME_BENEFITS, benefitString);
+        contentValuesTechniqueWhy
+            .put(TechniqueWhyEntry.COLUMN_NAME_TECHNIQUE_ID, technique.getId());
+
+        contentValuesTechniqueHow = new ContentValues();
+        List<Step> stepList = technique.getTechniqueHow().getStepList();
+        String stepString = gson.toJson(stepList);
+        contentValuesTechniqueHow.put(TechniqueHowEntry.COLUMN_NAME_STEPS, stepString);
+        contentValuesTechniqueHow
+            .put(TechniqueHowEntry.COLUMN_NAME_TECHNIQUE_ID, technique.getId());
 
         if (isRecordPresent(technique.getId())) {
           Uri uriToQueryIdTechnique = TechniqueEntry.CONTENT_URI_TECHNIQUE.buildUpon()
@@ -58,6 +80,10 @@ public class TechniquePullService extends IntentService {
           getContentResolver().insert(TechniqueEntry.CONTENT_URI_TECHNIQUE, contentValuesTechnique);
           getContentResolver()
               .insert(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, contentValuesTechniqueWhat);
+          getContentResolver()
+              .insert(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, contentValuesTechniqueWhy);
+          getContentResolver()
+              .insert(TechniqueHowEntry.CONTENT_URI_TECHNIQUE_HOW, contentValuesTechniqueHow);
         }
       }
     }

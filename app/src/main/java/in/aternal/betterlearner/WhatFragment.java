@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,29 +16,28 @@ import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WhatFragment.OnFragmentInteractionListener} interface
+ * {@link OnWhatFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link WhatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class WhatFragment extends Fragment {
 
-  private static final String ARG_TECHNIQUE_ID = "param1";
+  private static final String ARG_TECHNIQUE_ID = "arg_technique_id";
 
-  // TODO: Rename and change types of parameters
   private String mTechniqueId;
   private String mTechniqueWhatDesc;
 
-  private OnFragmentInteractionListener mListener;
+  private OnWhatFragmentInteractionListener mListener;
 
   public WhatFragment() {
     // Required empty public constructor
   }
 
-  public static WhatFragment newInstance(String param1) {
+  public static WhatFragment newInstance(String techniqueId) {
     WhatFragment fragment = new WhatFragment();
     Bundle args = new Bundle();
-    args.putString(ARG_TECHNIQUE_ID, param1);
+    args.putString(ARG_TECHNIQUE_ID, techniqueId);
     fragment.setArguments(args);
     return fragment;
   }
@@ -76,18 +74,18 @@ public class WhatFragment extends Fragment {
 
   public void onButtonPressed(Uri uri) {
     if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
+      mListener.onWhatFragmentInteraction(uri);
     }
   }
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
+    if (context instanceof OnWhatFragmentInteractionListener) {
+      mListener = (OnWhatFragmentInteractionListener) context;
     } else {
       throw new RuntimeException(context.toString()
-          + " must implement OnFragmentInteractionListener");
+          + " must implement OnWhatFragmentInteractionListener");
     }
   }
 
@@ -103,7 +101,7 @@ public class WhatFragment extends Fragment {
    * to the activity and potentially other fragments contained in that
    * activity.
    */
-  public interface OnFragmentInteractionListener {
-    void onFragmentInteraction(Uri uri);
+  public interface OnWhatFragmentInteractionListener {
+    void onWhatFragmentInteraction(Uri uri);
   }
 }
