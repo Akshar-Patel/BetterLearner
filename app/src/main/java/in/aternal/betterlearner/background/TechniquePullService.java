@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
+import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
 import in.aternal.betterlearner.model.Technique;
 import java.util.List;
@@ -26,28 +27,45 @@ public class TechniquePullService extends IntentService {
       List<Technique> techniqueList = JsonParser.getTechniqueList(getApplicationContext());
 
       testWhat(1);
-      ContentValues contentValues;
+      ContentValues contentValuesTechnique, contentValuesTechniqueWhat;
       for (Technique technique :
           techniqueList) {
 
-        contentValues = new ContentValues();
-        contentValues.put(TechniqueEntry.COLUMN_NAME_ID, technique.getId());
-        contentValues.put(TechniqueEntry.COLUMN_NAME_NAME, technique.getName());
-        contentValues.put(TechniqueEntry.COLUMN_NAME_DESC, technique.getDesc());
+        contentValuesTechnique = new ContentValues();
+        contentValuesTechnique.put(TechniqueEntry.COLUMN_NAME_ID, technique.getId());
+        contentValuesTechnique.put(TechniqueEntry.COLUMN_NAME_NAME, technique.getName());
+        contentValuesTechnique.put(TechniqueEntry.COLUMN_NAME_DESC, technique.getDesc());
+
+        contentValuesTechniqueWhat = new ContentValues();
+        Log.d("what desc",technique.getTechniqueWhat().getDesc());
+        contentValuesTechniqueWhat
+            .put(TechniqueWhatEntry.COLUMN_NAME_DESC, technique.getTechniqueWhat().getDesc());
+        contentValuesTechniqueWhat
+            .put(TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID, technique.getId());
 
         if (isRecordPresent(technique.getId())) {
-          Uri uriToQueryId = TechniqueEntry.CONTENT_URI_TECHNIQUE.buildUpon()
+          Uri uriToQueryIdTechnique = TechniqueEntry.CONTENT_URI_TECHNIQUE.buildUpon()
               .appendPath(String.valueOf(technique.getId())).build();
-          getContentResolver().update(uriToQueryId, contentValues, null, null);
+          getContentResolver().update(uriToQueryIdTechnique, contentValuesTechnique, null, null);
+
+          int techniqueWhatId = getTechniqueWhatId(technique.getId());
+          Uri uriToQueryIdTechniqueWhat = TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT.buildUpon()
+              .appendPath(String.valueOf(technique.getId())).build();
+//          getContentResolver()
+//              .update(uriToQueryIdTechniqueWhat, contentValuesTechniqueWhat, "id=?", new String[]{
+//                  String.valueOf(techniqueWhatId)});
         } else {
-          getContentResolver().insert(TechniqueEntry.CONTENT_URI_TECHNIQUE, contentValues);
+          getContentResolver().insert(TechniqueEntry.CONTENT_URI_TECHNIQUE, contentValuesTechnique);
+          getContentResolver()
+              .insert(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, contentValuesTechniqueWhat);
         }
       }
     }
   }
 
   private Boolean isRecordPresent(int id) {
-    Uri uriToQueryId = TechniqueEntry.CONTENT_URI_TECHNIQUE.buildUpon().appendPath(String.valueOf(id))
+    Uri uriToQueryId = TechniqueEntry.CONTENT_URI_TECHNIQUE.buildUpon()
+        .appendPath(String.valueOf(id))
         .build();
     Cursor cursor = getContentResolver()
         .query(uriToQueryId, null,
@@ -62,14 +80,27 @@ public class TechniquePullService extends IntentService {
     return false;
   }
 
-  private void testWhat(int id){
+  private int getTechniqueWhatId(int techniqueId) {
+    Cursor cursor = getContentResolver()
+        .query(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, null,
+            "technique_id=?", new String[]{String.valueOf(techniqueId)}, null);
+    int id = 0;
+    if (cursor != null) {
+      cursor.moveToFirst();
+      id = cursor.getInt(cursor.getColumnIndex(TechniqueWhatEntry.COLUMN_NAME_ID));
+      cursor.close();
+    }
+    return id;
+  }
+
+  private void testWhat(int id) {
     Cursor cursor = getContentResolver()
         .query(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, null,
             "technique_id=?", new String[]{String.valueOf(id)}, null);
     if (cursor != null) {
       int count = cursor.getCount();
       cursor.close();
-      Log.d("what count",count+"");
+      Log.d("what count", count + "");
     }
   }
 }

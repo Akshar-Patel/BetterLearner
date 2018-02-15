@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
+import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
+import in.aternal.betterlearner.model.TechniqueWhat;
 
 
 public class TechniqueDbHelper extends SQLiteOpenHelper {
@@ -26,6 +28,15 @@ public class TechniqueDbHelper extends SQLiteOpenHelper {
         "); ";
 
 
+    final String SQL_CREATE_TECHNIQUE_WHAT_TABLE = "CREATE TABLE " + TechniqueWhatEntry.TABLE_NAME + " (" +
+        TechniqueWhatEntry.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+        TechniqueWhatEntry.COLUMN_NAME_DESC + " TEXT NOT NULL," +
+        TechniqueWhyEntry.COLUMN_NAME_TECHNIQUE_ID + " INTEGER, " +
+        " FOREIGN KEY (" + TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID +
+        ") REFERENCES " +
+        TechniqueEntry.TABLE_NAME + "(" + TechniqueEntry.COLUMN_NAME_ID + ")" +
+        "); ";
+
     final String SQL_CREATE_TECHNIQUE_WHY_TABLE = "CREATE TABLE " + TechniqueWhyEntry.TABLE_NAME + " (" +
         TechniqueWhyEntry.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
         TechniqueWhyEntry.COLUMN_NAME_BENEFIT1 + " TEXT NOT NULL," +
@@ -37,6 +48,7 @@ public class TechniqueDbHelper extends SQLiteOpenHelper {
         "); ";
 
     sqLiteDatabase.execSQL(SQL_CREATE_TECHNIQUE_TABLE);
+    sqLiteDatabase.execSQL(SQL_CREATE_TECHNIQUE_WHAT_TABLE);
     sqLiteDatabase.execSQL(SQL_CREATE_TECHNIQUE_WHY_TABLE);
   }
 

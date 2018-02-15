@@ -15,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import in.aternal.betterlearner.background.TechniquePullService;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements
   RecyclerView mTechniqueRecyclerView;
   TechniquesRecyclerViewAdapter mTechniqueRecyclerViewAdapter;
   private GridLayoutManager mGridLayoutManager;
+  public static final String EXTRA_TECHNIQUE_ID = "extra_technique_id";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +47,11 @@ public class MainActivity extends AppCompatActivity implements
     }
     mTechniqueRecyclerView.setLayoutManager(mGridLayoutManager);
 
-    //Intent intentTechniquePullService = new Intent(this, TechniquePullService.class);
-    //this.startService(intentTechniquePullService);
+    Intent intentTechniquePullService = new Intent(this, TechniquePullService.class);
+    this.startService(intentTechniquePullService);
 
     getSupportLoaderManager().initLoader(0, null, this);
 
-    Intent intentTechniqueDetail = new Intent(this, TechniqueDetailActivity.class);
-    startActivity(intentTechniqueDetail);
   }
 
   void fakeInsert(int id) {
@@ -129,16 +129,24 @@ public class MainActivity extends AppCompatActivity implements
       return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
 
       TextView mTechniqueNameTextView;
       TextView mTechniqueDescTextView;
 
       public ViewHolder(View itemView) {
         super(itemView);
-
         mTechniqueNameTextView = itemView.findViewById(R.id.text_view_technique_name);
         mTechniqueDescTextView = itemView.findViewById(R.id.text_view_technique_desc);
+        itemView.setOnClickListener(this);
+      }
+
+      @Override
+      public void onClick(View view) {
+        Intent intentTechniqueDetail = new Intent(view.getContext(), TechniqueDetailActivity.class);
+        intentTechniqueDetail.putExtra(EXTRA_TECHNIQUE_ID,getLayoutPosition());
+        view.getContext().startActivity(intentTechniqueDetail);
       }
     }
   }

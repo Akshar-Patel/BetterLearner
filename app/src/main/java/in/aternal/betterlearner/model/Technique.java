@@ -12,6 +12,17 @@ public class Technique implements android.os.Parcelable {
   @Json(name="desc")
   String mDesc;
 
+  public TechniqueWhat getTechniqueWhat() {
+    return mTechniqueWhat;
+  }
+
+  public void setTechniqueWhat(TechniqueWhat techniqueWhat) {
+    mTechniqueWhat = techniqueWhat;
+  }
+
+  @Json(name="what")
+  TechniqueWhat mTechniqueWhat;
+
   public int getId() {
     return mId;
   }
@@ -36,6 +47,9 @@ public class Technique implements android.os.Parcelable {
     mDesc = desc;
   }
 
+  public Technique() {
+  }
+
   @Override
   public int describeContents() {
     return 0;
@@ -46,15 +60,14 @@ public class Technique implements android.os.Parcelable {
     dest.writeInt(this.mId);
     dest.writeString(this.mName);
     dest.writeString(this.mDesc);
-  }
-
-  public Technique() {
+    dest.writeParcelable(this.mTechniqueWhat, flags);
   }
 
   protected Technique(Parcel in) {
     this.mId = in.readInt();
     this.mName = in.readString();
     this.mDesc = in.readString();
+    this.mTechniqueWhat = in.readParcelable(TechniqueWhat.class.getClassLoader());
   }
 
   public static final Creator<Technique> CREATOR = new Creator<Technique>() {

@@ -11,14 +11,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
+import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
+import in.aternal.betterlearner.model.TechniqueWhat;
 
 
 public class TechniqueContentProvider extends ContentProvider {
 
   public static final int TECHNIQUE = 100;
   public static final int TECHNIQUE_WITH_ID = 101;
-  public static final int TECHNIQUE_WHY = 200;
+  public static final int TECHNIQUE_WHAT = 200;
+  public static final int TECHNIQUE_WHY = 300;
+
   private static final UriMatcher sUriMatcher = buildUriMatcher();
   private static String TAG = TechniqueContentProvider.class.getSimpleName();
   private TechniqueDbHelper mTechniqueDbHelper;
@@ -30,6 +34,8 @@ public class TechniqueContentProvider extends ContentProvider {
     uriMatcher
         .addURI(TechniqueContract.AUTHORITY, TechniqueContract.PATH_TECHNIQUE + "/#",
             TECHNIQUE_WITH_ID);
+    uriMatcher
+        .addURI(TechniqueContract.AUTHORITY, TechniqueContract.PATH_TECHNIQUE_WHAT, TECHNIQUE_WHAT);
     uriMatcher
         .addURI(TechniqueContract.AUTHORITY, TechniqueContract.PATH_TECHNIQUE_WHY, TECHNIQUE_WHY);
     return uriMatcher;
@@ -63,9 +69,14 @@ public class TechniqueContentProvider extends ContentProvider {
             .query(TechniqueEntry.TABLE_NAME, projection, "id=?", new String[]{id}, null, null,
                 sortOrder);
         break;
+      case TECHNIQUE_WHAT:
+        returnCursor = mSqLiteDatabase
+            .query(TechniqueWhatEntry.TABLE_NAME, projection, selection, selectionArgs, null, null,
+                sortOrder);
+        break;
       case TECHNIQUE_WHY:
         returnCursor = mSqLiteDatabase
-          .query(TechniqueWhyEntry.TABLE_NAME, projection, selection, selectionArgs, null, null,
+            .query(TechniqueWhyEntry.TABLE_NAME, projection, selection, selectionArgs, null, null,
                 sortOrder);
         break;
       default:
@@ -101,10 +112,19 @@ public class TechniqueContentProvider extends ContentProvider {
           Log.e(TAG, "failed to insert row into " + uri);
         }
         break;
+      case TECHNIQUE_WHAT:
+        long whatId = mSqLiteDatabase.insert(TechniqueWhatEntry.TABLE_NAME, null, contentValues);
+        if (whatId > 0) {
+          returnUri = ContentUris.withAppendedId(TechniqueEntry.CONTENT_URI_TECHNIQUE, whatId);
+        } else {
+          Log.e(TAG, "failed to insert row into " + uri);
+        }
+        break;
       case TECHNIQUE_WHY:
         long whyId = mSqLiteDatabase.insert(TechniqueWhyEntry.TABLE_NAME, null, contentValues);
         if (whyId > 0) {
-          returnUri = ContentUris.withAppendedId(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, whyId);
+          returnUri = ContentUris
+              .withAppendedId(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, whyId);
         } else {
           Log.e(TAG, "failed to insert row into " + uri);
         }

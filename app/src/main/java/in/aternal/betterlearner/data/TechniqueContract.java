@@ -12,8 +12,9 @@ public class TechniqueContract {
   public static final String AUTHORITY = "in.aternal.betterlearner";
   public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
-  public static final String PATH_TECHNIQUE = "techniques";
-  public static final String PATH_TECHNIQUE_WHY = "techniques_why";
+  public static final String PATH_TECHNIQUE = "technique";
+  public static final String PATH_TECHNIQUE_WHAT = "technique_what";
+  public static final String PATH_TECHNIQUE_WHY = "technique_why";
 
 
   public static final class TechniqueEntry implements BaseColumns {
@@ -28,7 +29,19 @@ public class TechniqueContract {
     public static final String COLUMN_NAME_DESC = "desc";
   }
 
+  public static final class TechniqueWhatEntry implements BaseColumns {
+    public static final Uri CONTENT_URI_TECHNIQUE_WHAT = BASE_CONTENT_URI.buildUpon()
+        .appendPath(PATH_TECHNIQUE_WHAT)
+        .build();
+
+    public static final String TABLE_NAME = "technique_what";
+    public static final String COLUMN_NAME_ID = "id";
+    public static final String COLUMN_NAME_DESC = "desc";
+    public static final String COLUMN_NAME_TECHNIQUE_ID = "technique_id";
+  }
+
   public static final class TechniqueWhyEntry implements BaseColumns {
+
     public static final Uri CONTENT_URI_TECHNIQUE_WHY = BASE_CONTENT_URI.buildUpon()
         .appendPath(PATH_TECHNIQUE_WHY)
         .build();
