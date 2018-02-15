@@ -6,7 +6,15 @@
   <string name="title_what">What</string>
   <string name="title_why">Why</string>
   <string name="title_how">How</string>
-
-  <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
+
+  <!-- For the Accessibility -->
+  <string name="content_desc_recycler_view_technique">list of techniques</string>
+  <string name="content_desc_text_view_technique_name">name of technique</string>
+  <string name="content_desc_text_view_technique_desc">description of technique</string>
+  <string name="content_desc_recycler_view_technique_how_steps">list of technique steps</string>
+  <string name="content_desc_text_view_technique_how_step">description of technique step</string>
+  <string name="content_desc_text_view_technique_what_desc">description of technique</string>
+  <string name="content_desc_recycler_view_technique_why_benefits">benefits of technique</string>
+  <string name="content_desc_text_view_technique_why_benefit">description of technique benefit</string>
 </resources>

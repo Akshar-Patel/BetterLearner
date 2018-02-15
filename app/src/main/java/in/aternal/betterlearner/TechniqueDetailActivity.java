@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -72,7 +71,7 @@ public class TechniqueDetailActivity extends AppCompatActivity implements
     FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager
         .beginTransaction();
-    fragmentTransaction.add(R.id.frame_layout_fragment_container,
+    fragmentTransaction.replace(R.id.frame_layout_fragment_container,
         whatFragment).commit();
 
 

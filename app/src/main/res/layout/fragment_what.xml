@@ -20,6 +20,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="@dimen/padding_double_default"
+      android:contentDescription="@string/content_desc_text_view_technique_what_desc"
       android:textSize="@dimen/text_size_large_default"
       tools:text="desc"/>
   </android.support.v7.widget.CardView>

@@ -6,5 +6,6 @@
   <android.support.v7.widget.RecyclerView
     android:id="@+id/recycler_view_technique_how_steps"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:contentDescription="@string/content_desc_recycler_view_technique_how_steps"/>
 </FrameLayout>

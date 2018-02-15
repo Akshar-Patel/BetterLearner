@@ -11,6 +11,7 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:layout_marginTop="@dimen/margin_half_default"
+    android:contentDescription="@string/content_desc_recycler_view_technique"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
