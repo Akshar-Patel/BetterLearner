@@ -5,11 +5,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 
 
@@ -27,6 +31,7 @@ public class WhatFragment extends Fragment {
 
   private String mTechniqueId;
   private String mTechniqueWhatDesc;
+  private String mTechniqueName;
 
   private OnWhatFragmentInteractionListener mListener;
 
@@ -50,13 +55,28 @@ public class WhatFragment extends Fragment {
       Cursor cursor;
       if (getActivity() != null) {
         cursor = getActivity().getContentResolver()
-            .query(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, null, TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID + "=?", new String[]{
+            .query(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, null,
+                TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID + "=?", new String[]{
                     mTechniqueId},
                 null);
-        if(cursor != null){
+
+        if (cursor != null) {
           cursor.moveToFirst();
-          mTechniqueWhatDesc = cursor.getString(cursor.getColumnIndex(TechniqueWhatEntry.COLUMN_NAME_DESC));
+          mTechniqueWhatDesc = cursor
+              .getString(cursor.getColumnIndex(TechniqueWhatEntry.COLUMN_NAME_DESC));
           cursor.close();
+        }
+        Cursor techniqueCursor;
+        techniqueCursor = getActivity().getContentResolver()
+            .query(TechniqueEntry.CONTENT_URI_TECHNIQUE, null, TechniqueEntry.COLUMN_NAME_ID + "=?",
+                new String[]{
+                    mTechniqueId},
+                null);
+        if (techniqueCursor != null) {
+          techniqueCursor.moveToFirst();
+          mTechniqueName = techniqueCursor
+              .getString(techniqueCursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_NAME));
+          techniqueCursor.close();
         }
       }
 
@@ -64,9 +84,24 @@ public class WhatFragment extends Fragment {
   }
 
   @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
+    if (appCompatActivity != null) {
+      ActionBar actionBar = appCompatActivity.getSupportActionBar();
+      if (actionBar != null) {
+        actionBar.setTitle(mTechniqueName);
+      }
+    }
+  }
+
+  @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_what, container, false);
+    TextView techniqueNameTextView = rootView.findViewById(R.id.text_view_heading);
+    techniqueNameTextView.setText(
+        String.format("What is %s?", mTechniqueName));
     TextView techniqueWhatDescTextView = rootView.findViewById(R.id.text_view_technique_what_desc);
     techniqueWhatDescTextView.setText(mTechniqueWhatDesc);
     return rootView;
@@ -102,6 +137,7 @@ public class WhatFragment extends Fragment {
    * activity.
    */
   public interface OnWhatFragmentInteractionListener {
+
     void onWhatFragmentInteraction(Uri uri);
   }
 }

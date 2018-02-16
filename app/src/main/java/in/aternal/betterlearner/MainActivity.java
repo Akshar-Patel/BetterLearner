@@ -1,11 +1,11 @@
 package in.aternal.betterlearner;
 
-import android.content.ContentValues;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -21,9 +21,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import in.aternal.betterlearner.background.TechniquePullService;
+import in.aternal.betterlearner.background.TechniquePullServiceReceiver;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
-import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
-import in.aternal.betterlearner.data.TechniqueDbHelper;
 
 public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks<Cursor> {
@@ -31,57 +30,34 @@ public class MainActivity extends AppCompatActivity implements
   public static final String EXTRA_TECHNIQUE_ID = "extra_technique_id";
   RecyclerView mTechniqueRecyclerView;
   TechniquesRecyclerViewAdapter mTechniqueRecyclerViewAdapter;
-  private GridLayoutManager mGridLayoutManager;
-  private AdView mAdView;
-  private FirebaseAnalytics mFirebaseAnalytics;
+  private BroadcastReceiver mBroadcastReceiver;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    //clearData();
-    //fakeInsert(0);
-    //fakeInsert(1);
-    //fakeInsertWhat(1);
+
+    IntentFilter filter = new IntentFilter(TechniquePullServiceReceiver.ACTION_DATA_FETCH);
+    mBroadcastReceiver = new TechniquePullServiceReceiver();
+    registerReceiver(mBroadcastReceiver, filter);
 
     mTechniqueRecyclerView = findViewById(R.id.recycler_view_technique);
-    mGridLayoutManager = new GridLayoutManager(this, 1);
+    GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      mGridLayoutManager.setSpanCount(3);
+      gridLayoutManager.setSpanCount(3);
     }
-    mTechniqueRecyclerView.setLayoutManager(mGridLayoutManager);
+    mTechniqueRecyclerView.setLayoutManager(gridLayoutManager);
 
     Intent intentTechniquePullService = new Intent(this, TechniquePullService.class);
     this.startService(intentTechniquePullService);
 
     getSupportLoaderManager().initLoader(0, null, this);
 
-    mAdView = (AdView) findViewById(R.id.adView);
+    AdView adView = (AdView) findViewById(R.id.adView);
     AdRequest adRequest = new AdRequest.Builder().build();
-    mAdView.loadAd(adRequest);
+    adView.loadAd(adRequest);
 
-    mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-  }
-
-  void fakeInsert(int id) {
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(TechniqueEntry.COLUMN_NAME_ID, id);
-    contentValues.put(TechniqueEntry.COLUMN_NAME_NAME, "pomo");
-    contentValues.put(TechniqueEntry.COLUMN_NAME_DESC, "pomodesc");
-    getContentResolver().insert(TechniqueEntry.CONTENT_URI_TECHNIQUE, contentValues);
-  }
-  void fakeInsertWhat(int id) {
-    ContentValues contentValues = new ContentValues();
-    contentValues.put(TechniqueWhyEntry.COLUMN_NAME_ID, id);
-    contentValues.put(TechniqueWhyEntry.COLUMN_NAME_TECHNIQUE_ID,1);
-    getContentResolver().insert(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, contentValues);
-  }
-
-
-  void clearData(){
-    TechniqueDbHelper techniqueDbHelper = new TechniqueDbHelper(this);
-    SQLiteDatabase sqLiteDatabase = techniqueDbHelper.getWritableDatabase();
-    sqLiteDatabase.execSQL("delete from "+TechniqueEntry.TABLE_NAME);
-    sqLiteDatabase.close();
+    FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
   }
 
   @Override
@@ -101,6 +77,12 @@ public class MainActivity extends AppCompatActivity implements
 
   }
 
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    unregisterReceiver(mBroadcastReceiver);
+  }
+
   public static class TechniquesRecyclerViewAdapter extends
       RecyclerView.Adapter<TechniquesRecyclerViewAdapter.ViewHolder> {
 
@@ -110,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements
     public TechniquesRecyclerViewAdapter(Cursor cursor, Context context) {
       mCursor = cursor;
       mContext = context;
-
     }
 
     @Override
@@ -136,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
 
       TextView mTechniqueNameTextView;
       TextView mTechniqueDescTextView;

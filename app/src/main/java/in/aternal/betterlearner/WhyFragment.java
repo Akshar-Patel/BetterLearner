@@ -5,7 +5,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,11 +17,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
 import in.aternal.betterlearner.model.TechniqueWhy.Benefit;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,13 +36,12 @@ import java.util.List;
 public class WhyFragment extends Fragment {
 
   private static final String ARG_TECHNIQUE_ID = "arg_technique_id";
-
+  private static List<Benefit> mTechniqueWhyBenefitList;
   private String mTechniqueId;
   private RecyclerView mTechniqueWhyBenefitRecyclerView;
   private TechniquesWhyBenefitRecyclerViewAdapter mTechniquesWhyBenefitRecyclerViewAdapter;
-  private static List<Benefit> mTechniqueWhyBenefitList;
-
   private OnWhyFragmentInteractionListener mListener;
+  private String mTechniqueName;
 
   public WhyFragment() {
     // Required empty public constructor
@@ -74,14 +76,41 @@ public class WhyFragment extends Fragment {
           mTechniqueWhyBenefitList = gson.fromJson(techniqueWhyBenefit, type);
           cursor.close();
         }
+
+        Cursor techniqueCursor;
+        techniqueCursor = getActivity().getContentResolver()
+            .query(TechniqueEntry.CONTENT_URI_TECHNIQUE, null, TechniqueEntry.COLUMN_NAME_ID + "=?",
+                new String[]{
+                    mTechniqueId},
+                null);
+        if (techniqueCursor != null) {
+          techniqueCursor.moveToFirst();
+          mTechniqueName = techniqueCursor
+              .getString(techniqueCursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_NAME));
+          techniqueCursor.close();
+        }
       }
     }
   }
 
   @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    AppCompatActivity appCompatActivity = ((AppCompatActivity) getActivity());
+    if (appCompatActivity != null) {
+      ActionBar actionBar = appCompatActivity.getSupportActionBar();
+      if (actionBar != null) {
+        actionBar.setTitle(mTechniqueName);
+      }
+    }
+  }
+  @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_why, container, false);
+    TextView techniqueNameTextView = rootView.findViewById(R.id.text_view_heading);
+    techniqueNameTextView.setText(
+        String.format("Why to use %s?", mTechniqueName));
     mTechniqueWhyBenefitRecyclerView = rootView.findViewById(R.id.recycler_view_technique_why_benefits);
     mTechniqueWhyBenefitRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
     mTechniquesWhyBenefitRecyclerViewAdapter = new TechniquesWhyBenefitRecyclerViewAdapter();

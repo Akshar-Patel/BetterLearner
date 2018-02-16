@@ -14,7 +14,6 @@ import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueHowEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
-import in.aternal.betterlearner.model.TechniqueWhat;
 
 
 public class TechniqueContentProvider extends ContentProvider {
@@ -82,7 +81,6 @@ public class TechniqueContentProvider extends ContentProvider {
                 sortOrder);
         break;
       case TECHNIQUE_HOW:
-        Log.d("how id ","query");
         returnCursor = mSqLiteDatabase
             .query(TechniqueHowEntry.TABLE_NAME, projection, selection, selectionArgs, null, null,
                 sortOrder);
@@ -163,8 +161,9 @@ public class TechniqueContentProvider extends ContentProvider {
   }
 
   @Override
-  public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s,
-      @Nullable String[] strings) {
+  public int update(@NonNull Uri uri, @Nullable ContentValues contentValues,
+      @Nullable String selection,
+      @Nullable String[] selectionArgs) {
 
     mSqLiteDatabase = mTechniqueDbHelper.getWritableDatabase();
     int updatedRows;
@@ -172,15 +171,34 @@ public class TechniqueContentProvider extends ContentProvider {
 
     switch (match) {
       case TECHNIQUE_WITH_ID:
-
         String id = uri.getPathSegments().get(1);
-
         updatedRows = mSqLiteDatabase
             .update(TechniqueEntry.TABLE_NAME, contentValues, "id=?", new String[]{id});
         if (getContext() != null) {
           getContext().getContentResolver().notifyChange(uri, null);
         }
         Log.d("id update ", id + " " + updatedRows);
+        return updatedRows;
+      case TECHNIQUE_WHAT:
+        updatedRows = mSqLiteDatabase
+            .update(TechniqueWhatEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+        if (getContext() != null) {
+          getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return updatedRows;
+      case TECHNIQUE_WHY:
+        updatedRows = mSqLiteDatabase
+            .update(TechniqueWhyEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+        if (getContext() != null) {
+          getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return updatedRows;
+      case TECHNIQUE_HOW:
+        updatedRows = mSqLiteDatabase
+            .update(TechniqueHowEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+        if (getContext() != null) {
+          getContext().getContentResolver().notifyChange(uri, null);
+        }
         return updatedRows;
       default:
         throw new UnsupportedOperationException("unknown uri: " + uri);

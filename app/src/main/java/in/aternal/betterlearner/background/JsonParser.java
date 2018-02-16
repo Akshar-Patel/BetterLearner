@@ -5,7 +5,6 @@ import static in.aternal.betterlearner.BuildConfig.DATA_URL;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
@@ -34,7 +33,6 @@ public class JsonParser {
 
   public static List<Technique> getTechniqueList(Context context) {
 
-    if(isUpdateAvailable(context)){
       Request request = new Request.Builder()
           .url(DATA_URL)
           .build();
@@ -48,7 +46,6 @@ public class JsonParser {
       } catch (IOException e) {
         e.printStackTrace();
       }
-    }
     return new ArrayList<Technique>();
   }
 
@@ -78,6 +75,7 @@ public class JsonParser {
       e.printStackTrace();
     }
     if(versionJson > versionSharedPref){
+      sharedPref.edit().putInt(context.getString(R.string.pref_key_version), versionJson).apply();
       return true;
     }
     return false;
