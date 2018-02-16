@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
 import in.aternal.betterlearner.R;
 import in.aternal.betterlearner.background.TechniquePullService;
 import in.aternal.betterlearner.background.TechniquePullServiceReceiver;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks<Cursor> {
 
   public static final String EXTRA_TECHNIQUE_ID = "extra_technique_id";
+  public static FirebaseAnalytics sFirebaseAnalytics;
   private RecyclerView mTechniqueRecyclerView;
   private BroadcastReceiver mBroadcastReceiver;
 
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
 
     IntentFilter filter = new IntentFilter(TechniquePullServiceReceiver.ACTION_DATA_FETCH);
     mBroadcastReceiver = new TechniquePullServiceReceiver();
@@ -57,7 +62,11 @@ public class MainActivity extends AppCompatActivity implements
     AdRequest adRequest = new AdRequest.Builder().build();
     adView.loadAd(adRequest);
 
-    FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    sFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    Bundle bundle = new Bundle();
+    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, MainActivity.class.getSimpleName());
+    sFirebaseAnalytics.logEvent(Event.VIEW_ITEM, bundle);
+
   }
 
   @Override

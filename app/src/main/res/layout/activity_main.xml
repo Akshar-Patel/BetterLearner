@@ -7,7 +7,16 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context="in.aternal.betterlearner.ui.MainActivity">
-
+  <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    ads:layout_constraintEnd_toEndOf="parent"
+    ads:layout_constraintStart_toStartOf="parent"
+    ads:layout_constraintTop_toTopOf="parent"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
   <android.support.v7.widget.RecyclerView
     android:id="@+id/recycler_view_technique"
     android:layout_width="0dp"
@@ -17,7 +26,7 @@
     app:layout_constraintBottom_toTopOf="@id/adView"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
+    app:layout_constraintTop_toBottomOf="@id/toolbar"/>
   <ProgressBar
     android:id="@+id/progress_bar"
     style="?android:attr/progressBarStyle"

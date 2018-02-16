@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import in.aternal.betterlearner.R;
@@ -88,6 +90,11 @@ public class HowFragment extends Fragment {
           techniqueCursor.close();
         }
       }
+    }
+    if (getContext() != null) {
+      Bundle bundle = new Bundle();
+      bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, HowFragment.class.getSimpleName());
+      MainActivity.sFirebaseAnalytics.logEvent(Event.VIEW_ITEM, bundle);
     }
   }
 

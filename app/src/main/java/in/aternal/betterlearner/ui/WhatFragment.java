@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
 import in.aternal.betterlearner.R;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
@@ -79,7 +81,11 @@ public class WhatFragment extends Fragment {
           techniqueCursor.close();
         }
       }
-
+    }
+    if (getContext() != null) {
+      Bundle bundle = new Bundle();
+      bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, WhatFragment.class.getSimpleName());
+      MainActivity.sFirebaseAnalytics.logEvent(Event.VIEW_ITEM, bundle);
     }
   }
 
