@@ -17,14 +17,15 @@ public class TechniqueWhy implements android.os.Parcelable {
       return new TechniqueWhy[size];
     }
   };
-  @Json(name="benefits")
+  @Json(name = "benefits")
+  private
   List<Benefit> mBenefitList;
 
   public TechniqueWhy() {
   }
 
 
-  protected TechniqueWhy(Parcel in) {
+  TechniqueWhy(Parcel in) {
     this.mBenefitList = in
         .createTypedArrayList(Benefit.CREATOR);
   }
@@ -68,7 +69,7 @@ public class TechniqueWhy implements android.os.Parcelable {
     }
 
 
-    protected Benefit(Parcel in) {
+    Benefit(Parcel in) {
       this.desc = in.readString();
     }
 

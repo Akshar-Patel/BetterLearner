@@ -21,15 +21,17 @@ public class TechniquePullService extends IntentService {
 
   public static final String FETCH_STATUS = "fetch_status";
   public static final String FETCH_COMPLETE = "fetch_complete";
+
   public TechniquePullService() {
     super("TechniquePullService");
   }
 
   @Override
   protected void onHandleIntent(@Nullable Intent intent) {
-    if (JsonParser.isUpdateAvailable(getApplicationContext())) {
+    if (TechniquePullJsonParser.isUpdateAvailable(getApplicationContext())) {
 
-      List<Technique> techniqueList = JsonParser.getTechniqueList(getApplicationContext());
+      List<Technique> techniqueList = TechniquePullJsonParser
+          .getTechniqueList(getApplicationContext());
 
       ContentValues contentValuesTechnique;
       ContentValues contentValuesTechniqueWhat;

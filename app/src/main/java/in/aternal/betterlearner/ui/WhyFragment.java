@@ -1,4 +1,4 @@
-package in.aternal.betterlearner;
+package in.aternal.betterlearner.ui;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import in.aternal.betterlearner.R;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
@@ -37,9 +38,6 @@ public class WhyFragment extends Fragment {
 
   private static final String ARG_TECHNIQUE_ID = "arg_technique_id";
   private static List<Benefit> mTechniqueWhyBenefitList;
-  private String mTechniqueId;
-  private RecyclerView mTechniqueWhyBenefitRecyclerView;
-  private TechniquesWhyBenefitRecyclerViewAdapter mTechniquesWhyBenefitRecyclerViewAdapter;
   private OnWhyFragmentInteractionListener mListener;
   private String mTechniqueName;
 
@@ -59,20 +57,21 @@ public class WhyFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-      mTechniqueId = getArguments().getString(ARG_TECHNIQUE_ID);
+      String techniqueId = getArguments().getString(ARG_TECHNIQUE_ID);
       Cursor cursor;
       if (getActivity() != null) {
         cursor = getActivity().getContentResolver()
             .query(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, null,
                 TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID + "=?", new String[]{
-                    mTechniqueId},
+                    techniqueId},
                 null);
         if (cursor != null) {
           cursor.moveToFirst();
           String techniqueWhyBenefit = cursor
               .getString(cursor.getColumnIndex(TechniqueWhyEntry.COLUMN_NAME_BENEFITS));
           Gson gson = new Gson();
-          Type type = new TypeToken<List<Benefit>>() {}.getType();
+          Type type = new TypeToken<List<Benefit>>() {
+          }.getType();
           mTechniqueWhyBenefitList = gson.fromJson(techniqueWhyBenefit, type);
           cursor.close();
         }
@@ -81,7 +80,7 @@ public class WhyFragment extends Fragment {
         techniqueCursor = getActivity().getContentResolver()
             .query(TechniqueEntry.CONTENT_URI_TECHNIQUE, null, TechniqueEntry.COLUMN_NAME_ID + "=?",
                 new String[]{
-                    mTechniqueId},
+                    techniqueId},
                 null);
         if (techniqueCursor != null) {
           techniqueCursor.moveToFirst();
@@ -104,6 +103,7 @@ public class WhyFragment extends Fragment {
       }
     }
   }
+
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -111,10 +111,12 @@ public class WhyFragment extends Fragment {
     TextView techniqueNameTextView = rootView.findViewById(R.id.text_view_heading);
     techniqueNameTextView.setText(
         String.format("Why to use %s?", mTechniqueName));
-    mTechniqueWhyBenefitRecyclerView = rootView.findViewById(R.id.recycler_view_technique_why_benefits);
-    mTechniqueWhyBenefitRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-    mTechniquesWhyBenefitRecyclerViewAdapter = new TechniquesWhyBenefitRecyclerViewAdapter();
-    mTechniqueWhyBenefitRecyclerView.setAdapter(mTechniquesWhyBenefitRecyclerViewAdapter);
+    RecyclerView techniqueWhyBenefitRecyclerView = rootView
+        .findViewById(R.id.recycler_view_technique_why_benefits);
+    techniqueWhyBenefitRecyclerView
+        .setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+    TechniquesWhyBenefitRecyclerViewAdapter techniquesWhyBenefitRecyclerViewAdapter = new TechniquesWhyBenefitRecyclerViewAdapter();
+    techniqueWhyBenefitRecyclerView.setAdapter(techniquesWhyBenefitRecyclerViewAdapter);
     return rootView;
   }
 
@@ -148,6 +150,7 @@ public class WhyFragment extends Fragment {
    * activity.
    */
   public interface OnWhyFragmentInteractionListener {
+
     void onWhyFragmentInteraction(Uri uri);
   }
 
@@ -156,18 +159,20 @@ public class WhyFragment extends Fragment {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_why_recycler_view_item,parent,false);
+      View view = LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.fragment_why_recycler_view_item, parent, false);
       return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-      holder.mTechniqueWhyBenefitTextView.setText(mTechniqueWhyBenefitList.get(holder.getAdapterPosition()).getDesc());
+      holder.mTechniqueWhyBenefitTextView
+          .setText(mTechniqueWhyBenefitList.get(holder.getAdapterPosition()).getDesc());
     }
 
     @Override
     public int getItemCount() {
-      if(mTechniqueWhyBenefitList != null){
+      if (mTechniqueWhyBenefitList != null) {
         return mTechniqueWhyBenefitList.size();
       }
       return 0;
@@ -175,7 +180,8 @@ public class WhyFragment extends Fragment {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-      TextView mTechniqueWhyBenefitTextView;
+      final TextView mTechniqueWhyBenefitTextView;
+
       public ViewHolder(View itemView) {
         super(itemView);
         mTechniqueWhyBenefitTextView = itemView.findViewById(R.id.text_view_technique_why_benefit);

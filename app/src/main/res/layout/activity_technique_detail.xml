@@ -6,7 +6,7 @@
   android:id="@+id/container"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="in.aternal.betterlearner.TechniqueDetailActivity">
+  tools:context="in.aternal.betterlearner.ui.TechniqueDetailActivity">
   <FrameLayout
     android:id="@+id/frame_layout_fragment_container"
     android:layout_width="match_parent"

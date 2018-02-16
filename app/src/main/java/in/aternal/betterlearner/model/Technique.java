@@ -5,14 +5,47 @@ import com.squareup.moshi.Json;
 
 public class Technique implements android.os.Parcelable {
 
+  public static final Creator<Technique> CREATOR = new Creator<Technique>() {
+    @Override
+    public Technique createFromParcel(Parcel source) {
+      return new Technique(source);
+    }
+
+    @Override
+    public Technique[] newArray(int size) {
+      return new Technique[size];
+    }
+  };
   @Json(name = "id")
+  private
   int mId;
   @Json(name = "name")
+  private
   String mName;
   @Json(name = "desc")
+  private
   String mDesc;
   @Json(name = "what")
+  private
   TechniqueWhat mTechniqueWhat;
+  @Json(name = "why")
+  private
+  TechniqueWhy mTechniqueWhy;
+  @Json(name = "how")
+  private
+  TechniqueHow mTechniqueHow;
+
+  public Technique() {
+  }
+
+  protected Technique(Parcel in) {
+    this.mId = in.readInt();
+    this.mName = in.readString();
+    this.mDesc = in.readString();
+    this.mTechniqueWhat = in.readParcelable(TechniqueWhat.class.getClassLoader());
+    this.mTechniqueWhy = in.readParcelable(TechniqueWhy.class.getClassLoader());
+    this.mTechniqueHow = in.readParcelable(TechniqueHow.class.getClassLoader());
+  }
 
   public TechniqueWhy getTechniqueWhy() {
     return mTechniqueWhy;
@@ -22,21 +55,12 @@ public class Technique implements android.os.Parcelable {
     mTechniqueWhy = techniqueWhy;
   }
 
-  @Json(name = "why")
-  TechniqueWhy mTechniqueWhy;
-
   public TechniqueHow getTechniqueHow() {
     return mTechniqueHow;
   }
 
   public void setTechniqueHow(TechniqueHow techniqueHow) {
     mTechniqueHow = techniqueHow;
-  }
-
-  @Json(name = "how")
-  TechniqueHow mTechniqueHow;
-
-  public Technique() {
   }
 
   public TechniqueWhat getTechniqueWhat() {
@@ -85,25 +109,4 @@ public class Technique implements android.os.Parcelable {
     dest.writeParcelable(this.mTechniqueWhy, flags);
     dest.writeParcelable(this.mTechniqueHow, flags);
   }
-
-  protected Technique(Parcel in) {
-    this.mId = in.readInt();
-    this.mName = in.readString();
-    this.mDesc = in.readString();
-    this.mTechniqueWhat = in.readParcelable(TechniqueWhat.class.getClassLoader());
-    this.mTechniqueWhy = in.readParcelable(TechniqueWhy.class.getClassLoader());
-    this.mTechniqueHow = in.readParcelable(TechniqueHow.class.getClassLoader());
-  }
-
-  public static final Creator<Technique> CREATOR = new Creator<Technique>() {
-    @Override
-    public Technique createFromParcel(Parcel source) {
-      return new Technique(source);
-    }
-
-    @Override
-    public Technique[] newArray(int size) {
-      return new Technique[size];
-    }
-  };
 }

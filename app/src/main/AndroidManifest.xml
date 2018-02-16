@@ -12,7 +12,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".MainActivity">
+    <activity android:name=".ui.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -31,11 +31,11 @@
 
     <activity
       android:label="@string/title_activity_technique_detail"
-      android:name=".TechniqueDetailActivity"
-      android:parentActivityName=".MainActivity">
+      android:name=".ui.TechniqueDetailActivity"
+      android:parentActivityName=".ui.MainActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value="in.aternal.betterlearner.MainActivity"/>
+        android:value="in.aternal.betterlearner.ui.MainActivity"/>
     </activity>
 
     <receiver android:name=".widget.TechniqueHowAppWidget">

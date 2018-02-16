@@ -20,10 +20,10 @@ public class TechniqueHowAppWidgetConfigureActivity extends Activity {
   private static final String PREF_PREFIX_KEY = "appwidget_";
   static int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-  RecyclerView mTechniqueNameRecyclerView;
-  TechniqueRecyclerViewAdapter mTechniqueNameRecyclerViewAdapter;
+  private RecyclerView mTechniqueNameRecyclerView;
+  private TechniqueRecyclerViewAdapter mTechniqueNameRecyclerViewAdapter;
 
-  EditText mAppWidgetText;
+  private EditText mAppWidgetText;
 
   public TechniqueHowAppWidgetConfigureActivity() {
     super();

@@ -1,4 +1,4 @@
-package in.aternal.betterlearner;
+package in.aternal.betterlearner.ui;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import in.aternal.betterlearner.R;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
 
@@ -29,7 +30,6 @@ public class WhatFragment extends Fragment {
 
   private static final String ARG_TECHNIQUE_ID = "arg_technique_id";
 
-  private String mTechniqueId;
   private String mTechniqueWhatDesc;
   private String mTechniqueName;
 
@@ -51,13 +51,13 @@ public class WhatFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-      mTechniqueId = getArguments().getString(ARG_TECHNIQUE_ID);
+      String techniqueId = getArguments().getString(ARG_TECHNIQUE_ID);
       Cursor cursor;
       if (getActivity() != null) {
         cursor = getActivity().getContentResolver()
             .query(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, null,
                 TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID + "=?", new String[]{
-                    mTechniqueId},
+                    techniqueId},
                 null);
 
         if (cursor != null) {
@@ -70,7 +70,7 @@ public class WhatFragment extends Fragment {
         techniqueCursor = getActivity().getContentResolver()
             .query(TechniqueEntry.CONTENT_URI_TECHNIQUE, null, TechniqueEntry.COLUMN_NAME_ID + "=?",
                 new String[]{
-                    mTechniqueId},
+                    techniqueId},
                 null);
         if (techniqueCursor != null) {
           techniqueCursor.moveToFirst();

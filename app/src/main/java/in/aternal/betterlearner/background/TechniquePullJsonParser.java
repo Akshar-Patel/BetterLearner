@@ -20,7 +20,7 @@ import okhttp3.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JsonParser {
+class TechniquePullJsonParser {
 
   private static final OkHttpClient client = new OkHttpClient();
   private static final Moshi moshi = new Moshi.Builder().build();
@@ -29,31 +29,30 @@ public class JsonParser {
 
   private static final JsonAdapter<List<Technique>> sListJsonAdapter = moshi.adapter(
       Types.newParameterizedType(List.class, Technique.class));
-  List<Technique> mTechniqueList;
 
-  public static List<Technique> getTechniqueList(Context context) {
+  static List<Technique> getTechniqueList(Context context) {
 
-      Request request = new Request.Builder()
-          .url(DATA_URL)
-          .build();
-      Response response;
-      try {
-        response = client.newCall(request).execute();
-        if (!response.isSuccessful()) {
-          throw new IOException("Unexpected code " + response);
-        }
-        return sListJsonAdapter.fromJson(response.body().source());
-      } catch (IOException e) {
-        e.printStackTrace();
+    Request request = new Request.Builder()
+        .url(DATA_URL)
+        .build();
+    Response response;
+    try {
+      response = client.newCall(request).execute();
+      if (!response.isSuccessful()) {
+        throw new IOException("Unexpected code " + response);
       }
-    return new ArrayList<Technique>();
+      return sListJsonAdapter.fromJson(response.body().source());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return new ArrayList<>();
   }
 
-  public static Boolean isUpdateAvailable(Context context){
+  static Boolean isUpdateAvailable(Context context) {
 
     SharedPreferences sharedPref = context.getSharedPreferences(
         context.getString(R.string.pref_file_update), Context.MODE_PRIVATE);
-    int versionSharedPref = sharedPref.getInt(context.getString(R.string.pref_key_version),0);
+    int versionSharedPref = sharedPref.getInt(context.getString(R.string.pref_key_version), 0);
 
     int versionJson = 0;
     Request request = new Request.Builder()
@@ -74,7 +73,7 @@ public class JsonParser {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if(versionJson > versionSharedPref){
+    if (versionJson > versionSharedPref) {
       sharedPref.edit().putInt(context.getString(R.string.pref_key_version), versionJson).apply();
       return true;
     }

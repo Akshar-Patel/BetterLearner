@@ -18,18 +18,18 @@ import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhyEntry;
 
 public class TechniqueContentProvider extends ContentProvider {
 
-  public static final int TECHNIQUE = 100;
-  public static final int TECHNIQUE_WITH_ID = 101;
-  public static final int TECHNIQUE_WHAT = 200;
-  public static final int TECHNIQUE_WHY = 300;
-  public static final int TECHNIQUE_HOW = 400;
+  private static final int TECHNIQUE = 100;
+  private static final int TECHNIQUE_WITH_ID = 101;
+  private static final int TECHNIQUE_WHAT = 200;
+  private static final int TECHNIQUE_WHY = 300;
+  private static final int TECHNIQUE_HOW = 400;
 
   private static final UriMatcher sUriMatcher = buildUriMatcher();
-  private static String TAG = TechniqueContentProvider.class.getSimpleName();
+  private static final String TAG = TechniqueContentProvider.class.getSimpleName();
   private TechniqueDbHelper mTechniqueDbHelper;
   private SQLiteDatabase mSqLiteDatabase;
 
-  public static UriMatcher buildUriMatcher() {
+  private static UriMatcher buildUriMatcher() {
     UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     uriMatcher.addURI(TechniqueContract.AUTHORITY, TechniqueContract.PATH_TECHNIQUE, TECHNIQUE);
     uriMatcher
@@ -137,14 +137,14 @@ public class TechniqueContentProvider extends ContentProvider {
         break;
       case TECHNIQUE_HOW:
         long howId = mSqLiteDatabase.insert(TechniqueHowEntry.TABLE_NAME, null, contentValues);
-        Log.d("how id ",howId+"");
+        Log.d("how id ", howId + "");
         if (howId > 0) {
           returnUri = ContentUris
               .withAppendedId(TechniqueHowEntry.CONTENT_URI_TECHNIQUE_HOW, howId);
         } else {
           Log.e(TAG, "failed to insert row into " + uri);
         }
-        Log.d("how id ",howId+"");
+        Log.d("how id ", howId + "");
         break;
       default:
         throw new UnsupportedOperationException("unknown uri: " + uri);

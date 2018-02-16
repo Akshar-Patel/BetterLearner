@@ -1,9 +1,10 @@
-package in.aternal.betterlearner;
+package in.aternal.betterlearner.ui;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import in.aternal.betterlearner.R;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueHowEntry;
 import in.aternal.betterlearner.model.TechniqueHow.Step;
@@ -35,9 +37,6 @@ public class HowFragment extends Fragment {
 
   private static final String ARG_TECHNIQUE_ID = "arg_technique_id";
   private static List<Step> mTechniqueHowStepList;
-  private String mTechniqueId;
-  private RecyclerView mTechniqueHowStepRecyclerView;
-  private TechniquesHowStepRecyclerViewAdapter mTechniquesHowBenefitRecyclerViewAdapter;
   private OnHowFragmentInteractionListener mListener;
   private String mTechniqueName;
 
@@ -57,20 +56,21 @@ public class HowFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-      mTechniqueId = getArguments().getString(ARG_TECHNIQUE_ID);
-      Cursor cursor,testc;
+      String techniqueId = getArguments().getString(ARG_TECHNIQUE_ID);
+      Cursor cursor, testc;
       if (getActivity() != null) {
         cursor = getActivity().getContentResolver()
             .query(TechniqueHowEntry.CONTENT_URI_TECHNIQUE_HOW, null,
                 TechniqueHowEntry.COLUMN_NAME_TECHNIQUE_ID + "=?", new String[]{
-                    mTechniqueId},
+                    techniqueId},
                 null);
         if (cursor != null) {
           cursor.moveToFirst();
           String techniqueHowStep = cursor
               .getString(cursor.getColumnIndex(TechniqueHowEntry.COLUMN_NAME_STEPS));
           Gson gson = new Gson();
-          Type type = new TypeToken<List<Step>>() {}.getType();
+          Type type = new TypeToken<List<Step>>() {
+          }.getType();
           mTechniqueHowStepList = gson.fromJson(techniqueHowStep, type);
           cursor.close();
         }
@@ -79,7 +79,7 @@ public class HowFragment extends Fragment {
         techniqueCursor = getActivity().getContentResolver()
             .query(TechniqueEntry.CONTENT_URI_TECHNIQUE, null, TechniqueEntry.COLUMN_NAME_ID + "=?",
                 new String[]{
-                    mTechniqueId},
+                    techniqueId},
                 null);
         if (techniqueCursor != null) {
           techniqueCursor.moveToFirst();
@@ -102,17 +102,19 @@ public class HowFragment extends Fragment {
       }
     }
   }
+
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_how, container, false);
     TextView techniqueNameTextView = rootView.findViewById(R.id.text_view_heading);
     techniqueNameTextView.setText(
         String.format("How to use %s?", mTechniqueName));
-    mTechniqueHowStepRecyclerView= rootView.findViewById(R.id.recycler_view_technique_how_steps);
-    mTechniqueHowStepRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-    mTechniquesHowBenefitRecyclerViewAdapter = new TechniquesHowStepRecyclerViewAdapter();
-    mTechniqueHowStepRecyclerView.setAdapter(mTechniquesHowBenefitRecyclerViewAdapter);
+    RecyclerView techniqueHowStepRecyclerView = rootView
+        .findViewById(R.id.recycler_view_technique_how_steps);
+    techniqueHowStepRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+    TechniquesHowStepRecyclerViewAdapter techniquesHowBenefitRecyclerViewAdapter = new TechniquesHowStepRecyclerViewAdapter();
+    techniqueHowStepRecyclerView.setAdapter(techniquesHowBenefitRecyclerViewAdapter);
     return rootView;
   }
 
@@ -146,6 +148,7 @@ public class HowFragment extends Fragment {
    * activity..
    */
   public interface OnHowFragmentInteractionListener {
+
     void onHowFragmentInteraction(Uri uri);
   }
 
@@ -154,18 +157,20 @@ public class HowFragment extends Fragment {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_how_recycler_view_item,parent,false);
+      View view = LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.fragment_how_recycler_view_item, parent, false);
       return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-      holder.mTechniqueHowStepTextView.setText(mTechniqueHowStepList.get(holder.getAdapterPosition()).getDesc());
+      holder.mTechniqueHowStepTextView
+          .setText(mTechniqueHowStepList.get(holder.getAdapterPosition()).getDesc());
     }
 
     @Override
     public int getItemCount() {
-      if(mTechniqueHowStepList != null){
+      if (mTechniqueHowStepList != null) {
         return mTechniqueHowStepList.size();
       }
       return 0;
@@ -173,7 +178,8 @@ public class HowFragment extends Fragment {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-      TextView mTechniqueHowStepTextView;
+      final TextView mTechniqueHowStepTextView;
+
       public ViewHolder(View itemView) {
         super(itemView);
         mTechniqueHowStepTextView = itemView.findViewById(R.id.text_view_technique_how_step);

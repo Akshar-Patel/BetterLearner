@@ -1,4 +1,4 @@
-package in.aternal.betterlearner;
+package in.aternal.betterlearner.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import in.aternal.betterlearner.R;
 import in.aternal.betterlearner.background.TechniquePullService;
 import in.aternal.betterlearner.background.TechniquePullServiceReceiver;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
@@ -28,8 +29,7 @@ public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks<Cursor> {
 
   public static final String EXTRA_TECHNIQUE_ID = "extra_technique_id";
-  RecyclerView mTechniqueRecyclerView;
-  TechniquesRecyclerViewAdapter mTechniqueRecyclerViewAdapter;
+  private RecyclerView mTechniqueRecyclerView;
   private BroadcastReceiver mBroadcastReceiver;
 
   @Override
@@ -68,8 +68,9 @@ public class MainActivity extends AppCompatActivity implements
 
   @Override
   public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-    mTechniqueRecyclerViewAdapter = new TechniquesRecyclerViewAdapter(data, loader.getContext());
-    mTechniqueRecyclerView.setAdapter(mTechniqueRecyclerViewAdapter);
+    TechniquesRecyclerViewAdapter techniqueRecyclerViewAdapter = new TechniquesRecyclerViewAdapter(
+        data, loader.getContext());
+    mTechniqueRecyclerView.setAdapter(techniqueRecyclerViewAdapter);
   }
 
   @Override
@@ -86,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements
   public static class TechniquesRecyclerViewAdapter extends
       RecyclerView.Adapter<TechniquesRecyclerViewAdapter.ViewHolder> {
 
-    Cursor mCursor;
-    Context mContext;
+    final Cursor mCursor;
+    final Context mContext;
 
     public TechniquesRecyclerViewAdapter(Cursor cursor, Context context) {
       mCursor = cursor;
@@ -104,8 +105,10 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
       mCursor.moveToPosition(position);
-      holder.mTechniqueNameTextView.setText(mCursor.getString(mCursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_NAME)));
-      holder.mTechniqueDescTextView.setText(mCursor.getString(mCursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_DESC)));
+      holder.mTechniqueNameTextView
+          .setText(mCursor.getString(mCursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_NAME)));
+      holder.mTechniqueDescTextView
+          .setText(mCursor.getString(mCursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_DESC)));
     }
 
     @Override
@@ -118,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-      TextView mTechniqueNameTextView;
-      TextView mTechniqueDescTextView;
+      final TextView mTechniqueNameTextView;
+      final TextView mTechniqueDescTextView;
 
       public ViewHolder(View itemView) {
         super(itemView);
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements
       @Override
       public void onClick(View view) {
         Intent intentTechniqueDetail = new Intent(view.getContext(), TechniqueDetailActivity.class);
-        intentTechniqueDetail.putExtra(EXTRA_TECHNIQUE_ID,getLayoutPosition());
+        intentTechniqueDetail.putExtra(EXTRA_TECHNIQUE_ID, getLayoutPosition());
         view.getContext().startActivity(intentTechniqueDetail);
       }
     }

@@ -25,8 +25,8 @@ import java.util.List;
 public class TechniqueRecyclerViewAdapter extends
     RecyclerView.Adapter<TechniqueRecyclerViewAdapter.ViewHolder> {
 
-  Activity mActivity;
-  private List<String> mTechniqueNameList;
+  private final Activity mActivity;
+  private final List<String> mTechniqueNameList;
 
   public TechniqueRecyclerViewAdapter(Activity activity) {
     mTechniqueNameList = new ArrayList<>();
@@ -38,6 +38,7 @@ public class TechniqueRecyclerViewAdapter extends
         mTechniqueNameList
             .add(cursor.getString(cursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_NAME)));
       }
+      cursor.close();
     }
 
   }
@@ -66,7 +67,7 @@ public class TechniqueRecyclerViewAdapter extends
 
   public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 
-    TextView mTechniqueNameTextView;
+    final TextView mTechniqueNameTextView;
 
     public ViewHolder(View itemView) {
       super(itemView);
@@ -88,7 +89,9 @@ public class TechniqueRecyclerViewAdapter extends
         cursor.moveToFirst();
         techniqueHowStep = cursor
             .getString(cursor.getColumnIndex(TechniqueHowEntry.COLUMN_NAME_STEPS));
+        cursor.close();
       }
+
 
       List<Step> stepList;
       Gson gson = new Gson();
@@ -98,12 +101,15 @@ public class TechniqueRecyclerViewAdapter extends
 
       StringBuilder sb = new StringBuilder();
       int count = 1;
-      for (Step step : stepList) {
-        sb.append(count++);
-        sb.append(". ");
-        sb.append(step.getDesc());
-        sb.append("\n");
+      if (stepList != null) {
+        for (Step step : stepList) {
+          sb.append(count++);
+          sb.append(". ");
+          sb.append(step.getDesc());
+          sb.append("\n");
+        }
       }
+
       widgetText = sb.toString();
 
       Cursor techniqueCursor = view.getContext().getContentResolver()
@@ -114,6 +120,7 @@ public class TechniqueRecyclerViewAdapter extends
         techniqueCursor.moveToFirst();
         techniqueName = techniqueCursor
             .getString(techniqueCursor.getColumnIndex(TechniqueEntry.COLUMN_NAME_NAME));
+        techniqueCursor.close();
       }
 
       TechniqueHowAppWidgetConfigureActivity

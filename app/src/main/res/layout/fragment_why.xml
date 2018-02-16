@@ -3,7 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="in.aternal.betterlearner.WhyFragment">
+  tools:context="in.aternal.betterlearner.ui.WhyFragment">
   <TextView
     android:id="@+id/text_view_heading"
     android:layout_width="match_parent"

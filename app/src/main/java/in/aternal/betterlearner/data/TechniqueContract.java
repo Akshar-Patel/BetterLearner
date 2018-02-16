@@ -5,18 +5,16 @@ import android.provider.BaseColumns;
 
 public class TechniqueContract {
 
-  //private constructor to prevent accident instantiation of class
-  private TechniqueContract() {
-  }
-
   public static final String AUTHORITY = "in.aternal.betterlearner";
-  public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-
   public static final String PATH_TECHNIQUE = "technique";
   public static final String PATH_TECHNIQUE_WHAT = "technique_what";
   public static final String PATH_TECHNIQUE_WHY = "technique_why";
   public static final String PATH_TECHNIQUE_HOW = "technique_how";
+  private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
+  //private constructor to prevent accident instantiation of class
+  private TechniqueContract() {
+  }
 
   public static final class TechniqueEntry implements BaseColumns {
 
@@ -31,6 +29,7 @@ public class TechniqueContract {
   }
 
   public static final class TechniqueWhatEntry implements BaseColumns {
+
     public static final Uri CONTENT_URI_TECHNIQUE_WHAT = BASE_CONTENT_URI.buildUpon()
         .appendPath(PATH_TECHNIQUE_WHAT)
         .build();

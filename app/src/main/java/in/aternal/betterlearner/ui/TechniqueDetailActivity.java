@@ -1,4 +1,4 @@
-package in.aternal.betterlearner;
+package in.aternal.betterlearner.ui;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,19 +8,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
-import in.aternal.betterlearner.HowFragment.OnHowFragmentInteractionListener;
-import in.aternal.betterlearner.WhatFragment.OnWhatFragmentInteractionListener;
-import in.aternal.betterlearner.WhyFragment.OnWhyFragmentInteractionListener;
+import in.aternal.betterlearner.R;
+import in.aternal.betterlearner.ui.HowFragment.OnHowFragmentInteractionListener;
+import in.aternal.betterlearner.ui.WhatFragment.OnWhatFragmentInteractionListener;
+import in.aternal.betterlearner.ui.WhyFragment.OnWhyFragmentInteractionListener;
 
 public class TechniqueDetailActivity extends AppCompatActivity implements
     OnWhatFragmentInteractionListener, OnWhyFragmentInteractionListener,
     OnHowFragmentInteractionListener {
 
-  private TextView mTextMessage;
   private String mExtraTechniqueIdString;
 
-  private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+  private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
       = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
     @Override
@@ -57,7 +56,6 @@ public class TechniqueDetailActivity extends AppCompatActivity implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_technique_detail);
 
-    mTextMessage = (TextView) findViewById(R.id.message);
     BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 

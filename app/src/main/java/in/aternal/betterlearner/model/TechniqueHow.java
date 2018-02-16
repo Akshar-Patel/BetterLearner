@@ -18,12 +18,13 @@ public class TechniqueHow implements android.os.Parcelable {
     }
   };
   @Json(name = "steps")
+  private
   List<Step> mStepList;
 
   public TechniqueHow() {
   }
 
-  protected TechniqueHow(Parcel in) {
+  TechniqueHow(Parcel in) {
     this.mStepList = in
         .createTypedArrayList(Step.CREATOR);
   }
@@ -65,7 +66,7 @@ public class TechniqueHow implements android.os.Parcelable {
     public Step() {
     }
 
-    protected Step(Parcel in) {
+    Step(Parcel in) {
       this.desc = in.readString();
     }
 
