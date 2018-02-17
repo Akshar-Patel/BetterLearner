@@ -19,6 +19,7 @@ public class TechniqueHowAppWidgetConfigureActivity extends Activity {
   private static final String PREFS_NAME = "in.aternal.betterlearner.widget.TechniqueHowAppWidget";
   private static final String PREF_PREFIX_KEY = "appwidget_";
   static int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+  private static String PREF_KEY_TECHNIQUE_NAME = "technique_name";
 
   private RecyclerView mTechniqueNameRecyclerView;
   private TechniqueRecyclerViewAdapter mTechniqueNameRecyclerViewAdapter;
@@ -57,7 +58,7 @@ public class TechniqueHowAppWidgetConfigureActivity extends Activity {
   // Write the prefix to the SharedPreferences object for this widget
   static void saveTechniqueNamePref(Context context, int appWidgetId, String text) {
     SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-    prefs.putString(PREF_PREFIX_KEY + appWidgetId + "technique_name", text);
+    prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_KEY_TECHNIQUE_NAME, text);
     prefs.apply();
   }
 
@@ -65,7 +66,8 @@ public class TechniqueHowAppWidgetConfigureActivity extends Activity {
   // If there is no preference saved, get the default from a resource
   static String loadTechniqueNamePref(Context context, int appWidgetId) {
     SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-    String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId + "technique_name", null);
+    String titleValue = prefs
+        .getString(PREF_PREFIX_KEY + appWidgetId + PREF_KEY_TECHNIQUE_NAME, null);
     if (titleValue != null) {
       return titleValue;
     } else {
@@ -75,7 +77,7 @@ public class TechniqueHowAppWidgetConfigureActivity extends Activity {
 
   static void deleteTechniqueNamePref(Context context, int appWidgetId) {
     SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-    prefs.remove(PREF_PREFIX_KEY + appWidgetId + "technique_name");
+    prefs.remove(PREF_PREFIX_KEY + appWidgetId + PREF_KEY_TECHNIQUE_NAME);
     prefs.apply();
   }
 

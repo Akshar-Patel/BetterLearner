@@ -21,4 +21,10 @@
   <string name="add_widget">Add widget</string>
   <string name="select_technique">Select Technique</string>
   <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+  <string name="io_exception_message">Unexpected code</string>
+  <string name="insert_fail_log">failed to insert row into</string>
+  <string name="unknown_uri_message">unknown uri:</string>
+  <string name="heading_how_fragment">How to use %s?</string>
+  <string name="heading_what_fragment">What is %s?</string>
+  <string name="heading_why_fragment">Why to use %s?</string>
 </resources>

@@ -29,6 +29,7 @@ class TechniquePullJsonParser {
 
   private static final JsonAdapter<List<Technique>> sListJsonAdapter = moshi.adapter(
       Types.newParameterizedType(List.class, Technique.class));
+  private static final String KEY_JSON_VERSION = "version";
 
   static List<Technique> getTechniqueList(Context context) {
 
@@ -39,7 +40,7 @@ class TechniquePullJsonParser {
     try {
       response = client.newCall(request).execute();
       if (!response.isSuccessful()) {
-        throw new IOException("Unexpected code " + response);
+        throw new IOException(context.getString(R.string.io_exception_message) + response);
       }
       return sListJsonAdapter.fromJson(response.body().source());
     } catch (IOException e) {
@@ -62,11 +63,11 @@ class TechniquePullJsonParser {
     try {
       response = client.newCall(request).execute();
       if (!response.isSuccessful()) {
-        throw new IOException("Unexpected code " + response);
+        throw new IOException(context.getString(R.string.io_exception_message) + response);
       }
       try {
         JSONObject jsonObject = new JSONObject(response.body().string());
-        versionJson = jsonObject.getInt("version");
+        versionJson = jsonObject.getInt(KEY_JSON_VERSION);
       } catch (JSONException e) {
         e.printStackTrace();
       }

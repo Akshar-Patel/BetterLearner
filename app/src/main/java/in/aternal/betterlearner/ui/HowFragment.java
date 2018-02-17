@@ -116,7 +116,7 @@ public class HowFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_how, container, false);
     TextView techniqueNameTextView = rootView.findViewById(R.id.text_view_heading);
     techniqueNameTextView.setText(
-        String.format("How to use %s?", mTechniqueName));
+        String.format(getString(R.string.heading_how_fragment), mTechniqueName));
     RecyclerView techniqueHowStepRecyclerView = rootView
         .findViewById(R.id.recycler_view_technique_how_steps);
     techniqueHowStepRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));

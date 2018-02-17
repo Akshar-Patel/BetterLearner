@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import in.aternal.betterlearner.R;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueHowEntry;
 import in.aternal.betterlearner.data.TechniqueContract.TechniqueWhatEntry;
@@ -115,7 +116,9 @@ public class TechniqueContentProvider extends ContentProvider {
         if (id > 0) {
           returnUri = ContentUris.withAppendedId(TechniqueEntry.CONTENT_URI_TECHNIQUE, id);
         } else {
-          Log.e(TAG, "failed to insert row into " + uri);
+          if (getContext() != null) {
+            Log.e(TAG, getContext().getString(R.string.insert_fail_log) + uri);
+          }
         }
         break;
       case TECHNIQUE_WHAT:
@@ -123,7 +126,9 @@ public class TechniqueContentProvider extends ContentProvider {
         if (whatId > 0) {
           returnUri = ContentUris.withAppendedId(TechniqueEntry.CONTENT_URI_TECHNIQUE, whatId);
         } else {
-          Log.e(TAG, "failed to insert row into " + uri);
+          if (getContext() != null) {
+            Log.e(TAG, getContext().getString(R.string.insert_fail_log) + uri);
+          }
         }
         break;
       case TECHNIQUE_WHY:
@@ -132,22 +137,27 @@ public class TechniqueContentProvider extends ContentProvider {
           returnUri = ContentUris
               .withAppendedId(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, whyId);
         } else {
-          Log.e(TAG, "failed to insert row into " + uri);
+          if (getContext() != null) {
+            Log.e(TAG, getContext().getString(R.string.insert_fail_log) + uri);
+          }
         }
         break;
       case TECHNIQUE_HOW:
         long howId = mSqLiteDatabase.insert(TechniqueHowEntry.TABLE_NAME, null, contentValues);
-        Log.d("how id ", howId + "");
         if (howId > 0) {
           returnUri = ContentUris
               .withAppendedId(TechniqueHowEntry.CONTENT_URI_TECHNIQUE_HOW, howId);
         } else {
-          Log.e(TAG, "failed to insert row into " + uri);
+          if (getContext() != null) {
+            Log.e(TAG, getContext().getString(R.string.insert_fail_log) + uri);
+          }
         }
-        Log.d("how id ", howId + "");
         break;
       default:
-        throw new UnsupportedOperationException("unknown uri: " + uri);
+        if (getContext() != null) {
+          throw new UnsupportedOperationException(
+              getContext().getString(R.string.unknown_uri_message) + uri);
+        }
     }
     if (getContext() != null) {
       getContext().getContentResolver().notifyChange(uri, null);
@@ -177,7 +187,6 @@ public class TechniqueContentProvider extends ContentProvider {
         if (getContext() != null) {
           getContext().getContentResolver().notifyChange(uri, null);
         }
-        Log.d("id update ", id + " " + updatedRows);
         return updatedRows;
       case TECHNIQUE_WHAT:
         updatedRows = mSqLiteDatabase
@@ -201,7 +210,11 @@ public class TechniqueContentProvider extends ContentProvider {
         }
         return updatedRows;
       default:
-        throw new UnsupportedOperationException("unknown uri: " + uri);
+        if (getContext() != null) {
+          throw new UnsupportedOperationException(
+              getContext().getString(R.string.unknown_uri_message) + uri);
+        }
+        return 0;
     }
   }
 }

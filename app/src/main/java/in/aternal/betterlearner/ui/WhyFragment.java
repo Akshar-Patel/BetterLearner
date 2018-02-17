@@ -117,7 +117,7 @@ public class WhyFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_why, container, false);
     TextView techniqueNameTextView = rootView.findViewById(R.id.text_view_heading);
     techniqueNameTextView.setText(
-        String.format("Why to use %s?", mTechniqueName));
+        String.format(getString(R.string.heading_why_fragment), mTechniqueName));
     RecyclerView techniqueWhyBenefitRecyclerView = rootView
         .findViewById(R.id.recycler_view_technique_why_benefits);
     techniqueWhyBenefitRecyclerView

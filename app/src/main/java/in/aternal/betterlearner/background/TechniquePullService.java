@@ -74,19 +74,19 @@ public class TechniquePullService extends IntentService {
           int techniqueWhatId = getTechniqueWhatId(technique.getId());
           getContentResolver()
               .update(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, contentValuesTechniqueWhat,
-                  "id=?", new String[]{
+                  TechniqueEntry.COLUMN_NAME_ID + "=?", new String[]{
                       String.valueOf(techniqueWhatId)});
 
           int techniqueWhyId = getTechniqueWhyId(technique.getId());
           getContentResolver()
               .update(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, contentValuesTechniqueWhy,
-                  "id=?", new String[]{
+                  TechniqueEntry.COLUMN_NAME_ID + "=?", new String[]{
                       String.valueOf(techniqueWhyId)});
 
           int techniqueHowId = getTechniqueHowId(technique.getId());
           getContentResolver()
               .update(TechniqueHowEntry.CONTENT_URI_TECHNIQUE_HOW, contentValuesTechniqueHow,
-                  "id=?", new String[]{
+                  TechniqueEntry.COLUMN_NAME_ID + "=?", new String[]{
                       String.valueOf(techniqueHowId)});
         } else {
 
@@ -131,7 +131,8 @@ public class TechniquePullService extends IntentService {
   private int getTechniqueWhatId(int techniqueId) {
     Cursor cursor = getContentResolver()
         .query(TechniqueWhatEntry.CONTENT_URI_TECHNIQUE_WHAT, null,
-            "technique_id=?", new String[]{String.valueOf(techniqueId)}, null);
+            TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID + "=?",
+            new String[]{String.valueOf(techniqueId)}, null);
     int id = 0;
     if (cursor != null) {
       cursor.moveToFirst();
@@ -144,7 +145,8 @@ public class TechniquePullService extends IntentService {
   private int getTechniqueWhyId(int techniqueId) {
     Cursor cursor = getContentResolver()
         .query(TechniqueWhyEntry.CONTENT_URI_TECHNIQUE_WHY, null,
-            "technique_id=?", new String[]{String.valueOf(techniqueId)}, null);
+            TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID + "=?",
+            new String[]{String.valueOf(techniqueId)}, null);
     int id = 0;
     if (cursor != null) {
       cursor.moveToFirst();
@@ -157,7 +159,8 @@ public class TechniquePullService extends IntentService {
   private int getTechniqueHowId(int techniqueId) {
     Cursor cursor = getContentResolver()
         .query(TechniqueHowEntry.CONTENT_URI_TECHNIQUE_HOW, null,
-            "technique_id=?", new String[]{String.valueOf(techniqueId)}, null);
+            TechniqueWhatEntry.COLUMN_NAME_TECHNIQUE_ID + "=?",
+            new String[]{String.valueOf(techniqueId)}, null);
     int id = 0;
     if (cursor != null) {
       cursor.moveToFirst();

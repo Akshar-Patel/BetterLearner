@@ -18,6 +18,7 @@ public class TechniqueDetailActivity extends AppCompatActivity implements
     OnWhatFragmentInteractionListener, OnWhyFragmentInteractionListener,
     OnHowFragmentInteractionListener {
 
+  private static final java.lang.String SAVED_KEY_ITEM_ID = "item_id";
   private String mExtraTechniqueIdString;
   private int mItemId;
   private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -73,7 +74,7 @@ public class TechniqueDetailActivity extends AppCompatActivity implements
     }
 
     if (savedInstanceState != null) {
-      int itemId = savedInstanceState.getInt("item_id");
+      int itemId = savedInstanceState.getInt(SAVED_KEY_ITEM_ID);
       replaceFragment(itemId);
     } else {
       WhatFragment whatFragment = WhatFragment.newInstance(mExtraTechniqueIdString);
@@ -88,7 +89,7 @@ public class TechniqueDetailActivity extends AppCompatActivity implements
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putInt("item_id", mItemId);
+    outState.putInt(SAVED_KEY_ITEM_ID, mItemId);
   }
 
   @Override

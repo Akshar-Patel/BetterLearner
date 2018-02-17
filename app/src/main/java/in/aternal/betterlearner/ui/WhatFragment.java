@@ -107,7 +107,7 @@ public class WhatFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_what, container, false);
     TextView techniqueNameTextView = rootView.findViewById(R.id.text_view_heading);
     techniqueNameTextView.setText(
-        String.format("What is %s?", mTechniqueName));
+        String.format(getString(R.string.heading_what_fragment), mTechniqueName));
     TextView techniqueWhatDescTextView = rootView.findViewById(R.id.text_view_technique_what_desc);
     techniqueWhatDescTextView.setText(mTechniqueWhatDesc);
     return rootView;
