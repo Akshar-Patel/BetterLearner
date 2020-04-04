@@ -1,3 +1,4 @@
+### :small_blue_diamond: Project Year: 2018 :small_blue_diamond:
 #### (Udacity Android Developer Nanodegree Project 6 and 7)
 # Better Learner: Android App for Effective Learning
 ### An app to help anyone who want to improve their learning process in short time. It will provide the techniques which can be used to learn faster and master the material.
